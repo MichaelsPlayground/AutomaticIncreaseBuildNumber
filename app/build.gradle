@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'de.androidcrypto.automaticincreasebuildnumber'
+    compileSdk 33
+
+    def versionPropsFile = file('version.properties')
+    def value = 1
+    Properties versionProps = new Properties()
+    if (!versionPropsFile.exists()) {
+        versionProps['VERSION_PATCH'] = "0"
+        versionProps['VERSION_NUMBER'] = "0"
+        versionProps['VERSION_BUILD'] = "-1" // I set it to minus one so the first build is 0 which isn't super important.
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+
+    def runTasks = gradle.startParameter.taskNames
+    if ('assembleRelease' in runTasks) {
+        value = 1
+    }
+
+    def mVersionName = ""
+    def mFileName = ""
+
+    if (versionPropsFile.canRead()) {
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        versionProps['VERSION_PATCH'] = (versionProps['VERSION_PATCH'].toInteger() + value).toString()
+        versionProps['VERSION_NUMBER'] = (versionProps['VERSION_NUMBER'].toInteger() + value).toString()
+        versionProps['VERSION_BUILD'] = (versionProps['VERSION_BUILD'].toInteger() + 1).toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        // 1: change major and minor version here
+        mVersionName = "v1.0.${versionProps['VERSION_PATCH']}"
+        // 2: change AppName for your app name
+        mFileName = "AppName-${mVersionName}.apk"
+
+        defaultConfig {
+            applicationId "de.androidcrypto.automaticincreasebuildnumber"
+            minSdkVersion 21
+            targetSdkVersion 33
+            versionCode versionProps['VERSION_NUMBER'].toInteger()
+            versionName "${mVersionName} Build: ${versionProps['VERSION_BUILD']}"
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
+
+    } else {
+        throw new FileNotFoundException("Could not read version.properties!")
+    }
+
+    if ('assembleRelease' in runTasks) {
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                    outputFileName = mFileName
+                }
+            }
+        }
+    }
+
+    task copyApkFiles(type: Copy){
+        from 'build/outputs/apk/release'
+        into '../apk'
+        include mFileName
+    }
+
+    afterEvaluate {
+        assembleRelease.doLast {
+            tasks.copyApkFiles.execute()
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

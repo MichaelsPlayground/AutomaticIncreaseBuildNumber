@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Automatic increase the build number" />
+
+    <Button
+        android:id="@+id/btnGetVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="get version" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Build type:" />
+
+    <TextView
+        android:id="@+id/tvBuildType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="the build type comes here" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Main version:" />
+
+    <TextView
+        android:id="@+id/tvMinorVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="the minor version comes here" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Version code:" />
+
+    <TextView
+        android:id="@+id/tvVersionCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="the version code comes here" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Version name:" />
+
+    <TextView
+        android:id="@+id/tvVersionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The version name comes here" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+
+</LinearLayout>
